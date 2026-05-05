@@ -11,7 +11,7 @@ import os
 load_dotenv()
 
 # model setup, temperatue is set factual
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-pro", temperature=0)
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
 
 
 # 1st agent -> search agent
@@ -31,7 +31,6 @@ def build_reader_agent():
 
 
 # writer chain
-
 writer_prompt = ChatPromptTemplate.from_messages([
     ("system", "You are an expert research writer. Write clear, structured and insightful reports."),
     ("human", """Write a detailed research report on the topic below.
@@ -50,9 +49,10 @@ writer_prompt = ChatPromptTemplate.from_messages([
     Be detailed, factual and professional."""),
 ])
 
+writer_chain = writer_prompt | llm | StrOutputParser()
+
 
 # critic_chain 
-
 critic_prompt = ChatPromptTemplate.from_messages([
     ("system", "You are a sharp and constructive research critic. Be honest and specific."),
     ("human", """Review the research report below and evaluate it strictly.
@@ -77,3 +77,13 @@ critic_prompt = ChatPromptTemplate.from_messages([
 ])
 
 critic_chain = critic_prompt | llm | StrOutputParser()
+
+
+# results = writer_chain.invoke({
+#     "topic": "The impact of AI on the job market",
+#     "research": """1. "AI and the Future of Work" - A comprehensive article from MIT Technology Review discussing how AI is transforming the job market.
+# 2. "The State of AI in the Workplace" - A report from McKinsey & Company analyzing the impact of AI on various industries.
+# 3. "AI and Employment: A Double-Edged Sword" - An article from Harvard Business Review exploring both the opportunities and challenges of AI in the workforce."""
+# })
+
+# print("Generated Report:\n", results)
