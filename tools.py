@@ -32,6 +32,30 @@ def web_search(query: str) -> str:
 
 # print(web_search.invoke("What is the latest news on War ?"))
 
+@tool
+def scrape_url(url: str) -> str:
+    """Scrape and return clean text content from a given URL for deeper reading."""
+    try:
+        # headers to mimic a browser visit to avoid being blocked by some websites
+        response = requests.get(url, timeout=8, headers={'User-Agent': 'Mozilla/5.0'})
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        # remove unwanted tags that are not part of the main content
+        for tag in soup(['script', 'style', 'header', 'footer', 'nav', 'aside']):
+            tag.decompose()
+            # why decompose? because it removes the tag from the soup and also destroys it to free up memory, which is more efficient than just extracting the tag.
+
+        return soup.get_text(separator=" ", strip=True)[:3000]
+
+    
+    except Exception as e:
+        return f"Error scraping URL: {e}"
+    
+
+# print(scrape_url.invoke("https://en.wikipedia.org/wiki/Democracy"))
+    
+
+
     
 
 
