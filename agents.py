@@ -11,7 +11,7 @@ import os
 load_dotenv()
 
 # model setup, temperatue is set factual
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro", temperature=0)
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
 
 
 # 1st agent -> search agent
