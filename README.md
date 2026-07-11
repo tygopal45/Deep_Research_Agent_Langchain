@@ -75,10 +75,13 @@ graph TD
    ```
 
 3. **Set up Environment Variables:**
-   Create a `.env` file in the root directory and add your Google API Key:
+   Create a `.env` file in the root directory and add your API keys:
    ```env
    GOOGLE_API_KEY=your_gemini_api_key_here
+   TAVILY_API_KEY=your_tavily_api_key_here
    ```
+   - Get a **Google (Gemini)** key at https://aistudio.google.com/apikey
+   - Get a **Tavily** search key at https://tavily.com
 
 4. **Run the Application:**
    ```bash

@@ -27,19 +27,18 @@ def main():
             st.warning("Please enter a topic first.")
             return
 
-        # Initialize progress tracking
+        # Initialize progress tracking. The pipeline calls back into `progress`
+        # before each stage, so the status updates reflect real progress.
         with st.status("Researching...", expanded=True) as status:
-            
-            # Step 1: Search
-            st.write("Step 1: Search Agent is working...")
-            # We will call the function but modify how we display progress
-            # For a better UI, we might want to refactor run_research_pipeline 
-            # to yield updates, but for now, we'll run it and display results.
-            
+
+            def progress(message: str):
+                st.write(message)
+
             try:
-                results = run_research_pipeline(topic)
+                results = run_research_pipeline(topic, progress=progress)
                 status.update(label="Research Complete!", state="complete", expanded=False)
             except Exception as e:
+                status.update(label="Research Failed", state="error")
                 st.error(f"An error occurred: {e}")
                 return
 

@@ -1,9 +1,20 @@
 from langchain_core.messages import HumanMessage
 from agents import build_reader_agent, build_search_agent, writer_chain, critic_chain
 
-def run_research_pipeline(topic: str) -> dict:
+def run_research_pipeline(topic: str, progress=None) -> dict:
+    """Run the 4-stage research pipeline.
+
+    Args:
+        topic: The research topic.
+        progress: Optional callback ``progress(message: str)`` invoked before
+            each stage so a UI can display real-time status. Defaults to no-op.
+    """
+    if progress is None:
+        progress = lambda _msg: None
+
     state = {}
 
+    progress("Step 1: Search Agent is working...")
     print("\n" + "="*50)
     print("Step 1: Search Agent is working ...")
     print("="*50)
@@ -22,6 +33,7 @@ def run_research_pipeline(topic: str) -> dict:
     print("\n search result: \n", state['search_result'])
 
     # step 2: reader agent
+    progress("Step 2: Reader Agent is scraping the resources...")
     print("\n" + "="*50)
     print("Step 2: Reader Agent is scraping the resources ...")
     print("="*50)
@@ -41,6 +53,7 @@ def run_research_pipeline(topic: str) -> dict:
 
 
     # step 3: writer chain
+    progress("Step 3: Writer Chain is drafting the report...")
     print("\n" + "="*50)
     print("Step 3: Writer Chain is drafting the report ...")
     print("="*50)
@@ -62,6 +75,7 @@ def run_research_pipeline(topic: str) -> dict:
 
 
     # step 4: critic report
+    progress("Step 4: Critic Chain is evaluating the report...")
     print("\n" + "="*50)
     print("Step 4: Critic Chain is evaluating the report ...")
     print("="*50)

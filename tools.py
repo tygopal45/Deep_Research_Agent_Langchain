@@ -11,7 +11,14 @@ from rich import print
 
 load_dotenv()
 
-tavily = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
+TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
+if not TAVILY_API_KEY:
+    raise EnvironmentError(
+        "TAVILY_API_KEY is not set. Add it to your .env file "
+        "(get a key at https://tavily.com)."
+    )
+
+tavily = TavilyClient(api_key=TAVILY_API_KEY)
 # print("Tavily client initialized")
 
 @tool
@@ -21,9 +28,9 @@ def web_search(query: str) -> str:
 
     out = []
 
-    for r in results['results']:
+    for r in results["results"]:
         out.append(
-            f'Title: {r['title']}\nURL : {r['url']}\nSnippet : {r['content'][:300]}\n'
+            f"Title: {r['title']}\nURL : {r['url']}\nSnippet : {r['content'][:300]}\n"
         )
 
     # to make list of strings into one string with separator

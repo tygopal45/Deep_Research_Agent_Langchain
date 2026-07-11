@@ -10,6 +10,12 @@ import os
 
 load_dotenv()
 
+if not os.getenv("GOOGLE_API_KEY"):
+    raise EnvironmentError(
+        "GOOGLE_API_KEY is not set. Add it to your .env file "
+        "(get a key at https://aistudio.google.com/apikey)."
+    )
+
 # model setup, temperatue is set factual
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
 
